@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: black;
+}
+
+main {
+    font-family: Arial;
+}
+
+#introductory-section {
+    margin-left: 30%;
+    margin-right: 30%;
+    color: white;
+}
+
+.project, .project-inverted {
+    width: 100vw;
+    height: 100vh;
+    padding: 64px 0;
+}
+
+.project .project-text-container, .project-inverted .project-text-container {
+    margin: 0 25%;
+    font-size: 1.5em;
+}
+
+.project * {
+    color: white;
+}
+
+.project-inverted * {
+    color: black;
+}
+
+a {
+    font-weight: bold;
+}
+
+
+
+#fractals-3d {
+    background-image: url(fractal2.jpg);
+    background-size: cover;
+}
+
+#edge-replace {
+    background-image: url(dragoncurve.jpg);
+    background-size: cover;
+}
+
+#youtube {
+    background-image: url(parametric.jpg);
+    background-size: cover;
+}

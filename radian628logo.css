@@ -1,0 +1,147 @@
+#radian628-logo {
+    width: 100vw;
+    height: 100vh;
+    background:black;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    overflow: hidden;
+}
+
+#radian628-circle {
+    position: absolute;
+    left: calc(50vw - 35vw);
+    top: calc(50vh - 20vw);
+    background: white;
+    width: 40vw;
+    height: 40vw;
+    border-radius: 50%;
+}
+
+#radian628-background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    animation-fill-mode: both;
+    animation-duration: 1.5s;
+    animation-name: radian628-arc;
+    animation-timing-function: cubic-bezier(0.000, 0.675, 0.000, 0.995);
+    clip-path: polygon(50% 50%, 200% -31.9453735%, 200% 131.945374%);
+}
+
+@keyframes radian628-arc {
+    from {
+        clip-path: polygon(185vw 50vh, 35vw 50vh, 185vw 50vh, 200vw 300vh, -100vw 50vh, 200vw -300vh);
+    }
+
+    to {
+        clip-path: polygon(185vw calc(50vh - 81.9453735vw), 35vw 50vh, 185vw calc(50vh + 81.9453735vw), 200vw 300vh, -100vw 50vh, 200vw -300vh);
+    }
+}
+
+#radian628-overlay { 
+    width: 100vw;
+    height: 100vh;
+    background-image: url(fractal.png);
+    background-size: cover;
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    mix-blend-mode: difference;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+
+
+
+h1 {
+    position: absolute;
+}
+
+
+
+#radian628-radian {
+    font-size: 4vw;
+    position: absolute;
+    left: calc(50vw - 5vw);
+    top: calc(50vh - 3.5vw);
+    font-family: 'Courier New';
+    animation-name: radian628-radian;
+    animation-duration: 1.0s;
+    animation-delay: 0.15s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.000, 0.675, 0.000, 0.995);
+    color: white;
+    mix-blend-mode: difference;
+}
+
+@keyframes radian628-radian {
+    from {
+        left: calc(50vw - 40vw);
+    }
+
+    to {
+        left: calc(50vw - 10.5vw);
+    }
+}
+
+
+
+#radian628-logo-container {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    animation-name: radian628-movedown;
+    animation-duration: 1.5s;
+    animation-delay: 0.3s;
+    animation-fill-mode: both;
+}
+
+@keyframes radian628-movedown {
+    from {
+        top: 0vh;
+    }
+
+    to {
+        top: -10vh;
+    }
+}
+
+
+
+#radian628-down-arrow {
+    position: absolute;
+    text-align: center;
+    left: calc(50vw - 5vw);
+    top: calc(80vh - 2.5vw);
+    width: 10vw;
+    height: 5vw;
+    font-family: 'Courier New';
+    animation-name: radian628-scroll-text;
+    animation-duration: 0.7s;
+    animation-delay: 1s;
+    animation-fill-mode: both;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    background: white;
+    font-size: 1vw;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    transition: transform 0.5s;
+}
+
+#radian628-down-arrow:hover {
+    transform: scale(1.1, 1.1);
+}
+
+@keyframes radian628-scroll-text {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
