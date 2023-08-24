@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="public/blog.css">
+        <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+    </head>
+    <body>
+        <a href="./">Back</a>
+        <div id="main-content">
+            <!--template=blogpost-template.html-->
+
+<h1 id="in-defense-of-learning-javascript">In defense of learning JavaScript</h1>
+<p>Out of all the languages out there (except possibly PHP and COBOL), JavaScript is among the most widely mocked and derided. You can hardly scroll a few thousand pixels in a programming community before seeing a post about some quirky JavaScript behavior that seems to defy all logic or some mishap in the JavaScript ecosystem that causes millions of webapps around the globe to suddenly and unceremoniously crash.</p>
+<p>But while there are certainly valid criticisms of JavaScript, there is one that I think is leveled at it <em>too often</em> and <em>too unfairly</em>: That it&#39;s a poor choice of a first language. In this video I&#39;ll explain my case for why JavaScript can not only <em>work</em> as a first language, but can in fact work <em>well</em> as a first language. I&#39;ll also address several arguments that attempt to claim otherwise.</p>
+<h2 id="a-low-barrier-to-entry">A low barrier to entry</h2>
+<p>Picture this: You&#39;re a programmer learning C++. You want to make a simple 2D graphical application. So you find some library that does that for you and you download it. You immediately get lost in the build process, the nested tree of files, the compiler flags, the PATH environment variable, the linker errors, the compiler incompatibilities, et cetera. Anyone who&#39;s used C++ can tell you that the experience of trying to add external dependencies to your project is a complete nightmare.</p>
+<p>Compare this to JavaScript, where 2D graphics is essentially built in with HTML/CSS and the Canvas API. In general, JS is going to provide substantially more out-of-the-box than the average language, simply because <em>so many features</em> come bundled with the browser. </p>
+<p>Here&#39;s another example of JS&#39;s low barrier to entry: With C++, you&#39;re encouraged to spin up a bloated, complicated IDE or use the terminal and have to figure out how environment variables work. Sure, an experienced programmer will find these things trivial, but a newcomer? Not so much. Conversely, with JS, you could quite literally edit the entire thing in Notepad, double click the HTML file, and open it up in a browser, and <em>It&#39;ll. Just. Work.</em></p>
+<p>The underlying point here is that JavaScript has a far lower barrier to entry than C++ and many other such languages because it forces you to do very little up front. Sure, you could argue that a programmer might have to worry about NPM, React, Webpack, or all of those other fancy webdev tools out there, but here&#39;s the thing: None of those things are mandatory! All you <em>have</em> to do is write a few text files and open them in a browser. <em>That&#39;s it.</em></p>
+<h2 id="easy-to-share">Easy to share</h2>
+<p>JavaScript&#39;s low barrier to entry extends beyond project creation. Anything you create in JavaScript is also going to be extremely easy to share. The simplest way of going about this is to shove all the files in a ZIP file and send it to someone. There&#39;s a very good chance they&#39;ll be able to directly open it in a browser by double clicking. No lengthy install process. No adding dependencies. No &quot;missing library&quot; errors. </p>
+<p>Even better yet, you can get a web server and host it directly in the browser, so all someone has to do to access the thing you made is to click on a URL. Getting free static site hosting is easy: This site <em>itself</em> is hosted on <a href="https://pages.github.com/">GitHub Pages</a> for free. Other sites like <a href="https://neocities.org/">Neocities</a> also offer free static site hosting. There are more examples than just those two&mdash; just google &quot;free static site hosting&quot; and you&#39;ll get a bunch of them.</p>
+<h2 id="it-does-everything-for-you-youll-take-too-much-for-granted">&quot;It does everything for you! You&#39;ll take too much for granted!&quot;</h2>
+<p>This is one of the more common arguments I see levied against JavaScript&mdash; that, because of how high-level and &quot;hand-holdy&quot; it is with its type coercion, automatic memory management, and carefree, happy-go-lucky attitude towards doing things that <em>should</em> produce errors, it&#39;s spoiling novice programmers and not preparing them for the rude awakening that will be C++, Java, Rust, or whatever other lower level language they might stumble across next.</p>
+<p>What if I told you that it&#39;s doing the exact opposite.</p>
+<p>JavaScript&#39;s cool features are also a curse. A blight on any programmer that tries to make a complex application. Because the flexibility you earn from its extremely loose compile-time rules is flexibility you make up for in <em>extremely frequent run-time errors</em>. In fact, this in and of itself is another common complaint against JS: Because of its incredibly lax rules, writing JavaScript code requires immense effort to avoid accidentally causing runtime errors, forcing programmers to spend hours debugging issues that a compiler would have otherwise caught instantly.</p>
+<p>But wait, don&#39;t we <em>want</em> new programmers to get good at debugging?</p>
+<p>In this regard, JavaScript&#39;s lack of compile-time guarantees work to its favor as a learning tool. Because it results in so many runtime errors, it <em>forces new programmers to learn how to debug their code</em>. In a way, it&#39;s like the flipside of trying to get around C++ compiler errors: In one, you try to debug the issue at compile time; in the other, you try to debug the issue at runtime.</p>
+
+        </div>
+        <script>
+            hljs.highlightAll();
+        </script>
+    </body>
+</html>

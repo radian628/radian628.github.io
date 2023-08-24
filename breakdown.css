@@ -1,0 +1,36 @@
+body {
+    background: #142836;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+main {
+    width: 40em;
+    margin: 0;
+    padding: 30px;
+    margin-left: 15%;
+    background: #ffffff;
+}
+/* 
+h1, h2, h3, h4, h5, h6 {
+
+} */
+
+.project-link {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+iframe {
+    width: 100%;
+}
+
+img {
+    margin-left: 30%;
+    width: 40%;
+}
+
+.long-image {
+    width: 100%;
+    margin-left: 0;
+}
