@@ -1,112 +1,489 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link type="text/css" href="/breakdown.css" rel="stylesheet">
-    </head>
-    <body>
-        <main>
-            <p><a href="../../">Main Page</a></p>
-            <h1>Voxel Life</h1>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/Y8rY11-GJXU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <h2>The Making of Voxel Life</h2>
-            <p>This document details how I created “Voxel Life”, as well as some of the thought processes I went through while making it. I named it “Voxel Life” because a “voxel” is a 3D pixel, and “life” refers to “Conway’s Game of Life”.</p>
-            <h3>Cellular Automata in Theory</h3>
-            <p>The animations in “Voxel Life” are based on outer-totalistic life-like cellular automata. The phrase “outer-totalistic life-like cellular automata” might seem confusing and jargon-y. However, the idea is actually simple (if you’ve heard of Conway’s Game of Life, the concept is nearly identical).</p>
+  <head>
+    <link type="text/css" href="/breakdown.css" rel="stylesheet" />
+  </head>
+  <body>
+    <main>
+      <p><a href="../../">Main Page</a></p>
+      <h1>Voxel Life</h1>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/Y8rY11-GJXU"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+      <h2>The Making of Voxel Life</h2>
+      <p>
+        This document details how I created “Voxel Life”, as well as some of the
+        thought processes I went through while making it. I named it “Voxel
+        Life” because a “voxel” is a 3D pixel, and “life” refers to “Conway’s
+        Game of Life”.
+      </p>
+      <h3>Cellular Automata in Theory</h3>
+      <p>
+        The animations in “Voxel Life” are based on outer-totalistic life-like
+        cellular automata. The phrase “outer-totalistic life-like cellular
+        automata” might seem confusing and jargon-y. However, the idea is
+        actually simple (if you’ve heard of Conway’s Game of Life, the concept
+        is nearly identical).
+      </p>
 
-            <p>In an outer-totalistic, life-like cellular automaton (OTLLCA for short, because “outer-totalistic, life-like cellular automaton ” is annoying to type and probably equally as annoying to read), you start with an infinite, two-dimensional grid of squares, called “cells”. Each cell can take one of two states- “alive”, or “dead”. These cells change states according to a “rule,” a set of conditions that determines whether a cell becomes alive, dead, or just stays the way it is. When the rule is applied and the cells have an opportunity to change their states, it is called a “generation”.</p>
+      <p>
+        In an outer-totalistic, life-like cellular automaton (OTLLCA for short,
+        because “outer-totalistic, life-like cellular automaton ” is annoying to
+        type and probably equally as annoying to read), you start with an
+        infinite, two-dimensional grid of squares, called “cells”. Each cell can
+        take one of two states- “alive”, or “dead”. These cells change states
+        according to a “rule,” a set of conditions that determines whether a
+        cell becomes alive, dead, or just stays the way it is. When the rule is
+        applied and the cells have an opportunity to change their states, it is
+        called a “generation”.
+      </p>
 
-            <p>In the case of OTLLCAs, rules are a function of (and only of) how many of a cell’s “neighbors” are alive. A cell’s neighbors are the eight squares surrounding that cell. In Conway’s Game of Life specifically, a cell becomes alive if exactly three of its neighbors are alive, stays alive if two or three of its neighbors are alive, and dies in all other cases. In other words, a cell is born with 3 neighbors, and survives with 2 or 3 neighbors. This is commonly notated as “B3/S23”, where “B” is short for “birth” and “S” is short for “survival”.</p>
+      <p>
+        In the case of OTLLCAs, rules are a function of (and only of) how many
+        of a cell’s “neighbors” are alive. A cell’s neighbors are the eight
+        squares surrounding that cell. In Conway’s Game of Life specifically, a
+        cell becomes alive if exactly three of its neighbors are alive, stays
+        alive if two or three of its neighbors are alive, and dies in all other
+        cases. In other words, a cell is born with 3 neighbors, and survives
+        with 2 or 3 neighbors. This is commonly notated as “B3/S23”, where “B”
+        is short for “birth” and “S” is short for “survival”.
+      </p>
 
-            <p>While OTLLCAs are classically defined as strictly two-dimensional, it’s trivial to extend the concept to 3D (which I did for “Voxel Life”). In 3D, cells have 26 neighbors (since the 3*3*3 cube surrounding a given cell- minus itself- amounts to 26 cells).</p>
+      <p>
+        While OTLLCAs are classically defined as strictly two-dimensional, it’s
+        trivial to extend the concept to 3D (which I did for “Voxel Life”). In
+        3D, cells have 26 neighbors (since the 3*3*3 cube surrounding a given
+        cell- minus itself- amounts to 26 cells).
+      </p>
 
-            <p>So what you see in “Voxel Life” is successive generations of a 3D OTLLCA- though not all of the time. Parts of the animation were actually created using regular 2D OTLLCAs- except, rather than replacing previous generations with new ones, new ones were stacked on top of them (or below them). This was what I used to make the pyramid-shaped ones, along with the “trees”. The notable exception to all of this is the intro, which is just plain ol’, 2D Conway’s Game of Life.</p>
+      <p>
+        So what you see in “Voxel Life” is successive generations of a 3D
+        OTLLCA- though not all of the time. Parts of the animation were actually
+        created using regular 2D OTLLCAs- except, rather than replacing previous
+        generations with new ones, new ones were stacked on top of them (or
+        below them). This was what I used to make the pyramid-shaped ones, along
+        with the “trees”. The notable exception to all of this is the intro,
+        which is just plain ol’, 2D Conway’s Game of Life.
+      </p>
 
-            <h3>Cellular Automata in Practice</h3>
-            <p>While the rules seem relatively simple, actually implementing and displaying them is a different story. I animated the entirety of “Voxel Life'' in Blender, an open source 3D animation program. The nice thing about Blender is that it exposes a Python API- in other words, the program itself can be controlled using Python code. This means that I can simulate all the OTLLCA rules in Python, convert them into a 3D representation that can be animated, and then display them, right? Wrong.</p>
+      <h3>Cellular Automata in Practice</h3>
+      <p>
+        While the rules seem relatively simple, actually implementing and
+        displaying them is a different story. I animated the entirety of “Voxel
+        Life'' in Blender, an open source 3D animation program. The nice thing
+        about Blender is that it exposes a Python API- in other words, the
+        program itself can be controlled using Python code. This means that I
+        can simulate all the OTLLCA rules in Python, convert them into a 3D
+        representation that can be animated, and then display them, right?
+        Wrong.
+      </p>
 
-            <p>There are two main problems with Python. The first is that it’s relatively slow, making it unsuitable for the huge amount of number crunching the Game of Life often requires. The second is simply that I haven’t used it much, a fact which will slow down development as I try to learn all sorts of new technologies.</p>
+      <p>
+        There are two main problems with Python. The first is that it’s
+        relatively slow, making it unsuitable for the huge amount of number
+        crunching the Game of Life often requires. The second is simply that I
+        haven’t used it much, a fact which will slow down development as I try
+        to learn all sorts of new technologies.
+      </p>
 
-            <p>I found the solution to both problems in JavaScript, another programming language. JavaScript is generally faster than Python (though, admittedly, it’s outclassed by many other languages). However, more importantly, I have far more JavaScript experience than I do with Python. After a few hours, I was able to throw together an implementation of 3D OTLLCAs in JavaScript.</p>
+      <p>
+        I found the solution to both problems in JavaScript, another programming
+        language. JavaScript is generally faster than Python (though,
+        admittedly, it’s outclassed by many other languages). However, more
+        importantly, I have far more JavaScript experience than I do with
+        Python. After a few hours, I was able to throw together an
+        implementation of 3D OTLLCAs in JavaScript.
+      </p>
 
-            <p>However, using JavaScript presented another problem: I can’t directly manipulate Blender from JavaScript, since its API is designed for Python and Python only. To get around this, I created a Python script that runs the JavaScript program in a subprocess and reads whatever it outputs (in this case, the three-dimensional grids of cells). </p>
+      <p>
+        However, using JavaScript presented another problem: I can’t directly
+        manipulate Blender from JavaScript, since its API is designed for Python
+        and Python only. To get around this, I created a Python script that runs
+        the JavaScript program in a subprocess and reads whatever it outputs (in
+        this case, the three-dimensional grids of cells).
+      </p>
 
-            <p>There was another problem, however: Python cannot directly understand the grids of cells I made in JavaScript, since the two languages represent the grids of cells in different ways. My first solution from this was to take the grids of cells my JavaScript simulation produced, convert them to JSON (a text-based data storage format that most programming languages can encode/decode), which I could then decode within Python. This worked well at first. However, when I started to create large patterns, things stopped working. This is because the grids I made were absolutely massive- on the order of gigabytes. JavaScript’s JSON parser (the thing that converts data into JSON) was simply incapable of creating strings this long.</p>
+      <p>
+        There was another problem, however: Python cannot directly understand
+        the grids of cells I made in JavaScript, since the two languages
+        represent the grids of cells in different ways. My first solution from
+        this was to take the grids of cells my JavaScript simulation produced,
+        convert them to JSON (a text-based data storage format that most
+        programming languages can encode/decode), which I could then decode
+        within Python. This worked well at first. However, when I started to
+        create large patterns, things stopped working. This is because the grids
+        I made were absolutely massive- on the order of gigabytes. JavaScript’s
+        JSON parser (the thing that converts data into JSON) was simply
+        incapable of creating strings this long.
+      </p>
 
-            <p>My solution to this was simple: Rather than sending Python the whole grid of cells, I’d send it the positions of the living cells, along with a bit of additional information about whether they’re in the process of dying or being born, to allow me to interpolate between frames. Since the vast majority of cells are dead in my simulations, the living cells accounted for far less data than the entire grid. As a result, JavaScript’s JSON parser could handle sending much larger simulations.</p>
+      <p>
+        My solution to this was simple: Rather than sending Python the whole
+        grid of cells, I’d send it the positions of the living cells, along with
+        a bit of additional information about whether they’re in the process of
+        dying or being born, to allow me to interpolate between frames. Since
+        the vast majority of cells are dead in my simulations, the living cells
+        accounted for far less data than the entire grid. As a result,
+        JavaScript’s JSON parser could handle sending much larger simulations.
+      </p>
 
-            <p>However, once I received these lists of living cells, I couldn’t simply display them on the screen. I had to convert them into a three-dimensional object in Blender, also known as a “mesh”. Meshes are essentially a list of vertices (points in 3D space), where specific vertices are connected together to form edges and faces. I decided to represent living cells as cubes, as this would show the grid-like nature of the cellular automata.</p>
+      <p>
+        However, once I received these lists of living cells, I couldn’t simply
+        display them on the screen. I had to convert them into a
+        three-dimensional object in Blender, also known as a “mesh”. Meshes are
+        essentially a list of vertices (points in 3D space), where specific
+        vertices are connected together to form edges and faces. I decided to
+        represent living cells as cubes, as this would show the grid-like nature
+        of the cellular automata.
+      </p>
 
-            <p>This is where I hit another problem: How do I convert the cells into cubes? The simplest option is just to simply get rid of the whole mesh and create a new one with new vertices, edges, and faces- all in the right positions- every time I need to update it (which is every frame). However, this is wildly inefficient for a number of reasons. First of all, adding and removing vertices is particularly bad for performance (since that could involve allocating more memory, which can slow things down as memory is shuffled around, and can also cause crashes because Blender’s Python API is dumb). The second problem is that I’m doing work I don’t need to do. Since I’m always working with cubes, the arrangement of edges and faces will stay the same, regardless of where the cubes are positioned and/or scaled. Both of these issues pointed me towards the simplest solution: I should be modifying the vertices (and only the vertices) of a mesh where the number of vertices is fixed. I’ll basically just be reusing the same cubes every frame.</p>
+      <p>
+        This is where I hit another problem: How do I convert the cells into
+        cubes? The simplest option is just to simply get rid of the whole mesh
+        and create a new one with new vertices, edges, and faces- all in the
+        right positions- every time I need to update it (which is every frame).
+        However, this is wildly inefficient for a number of reasons. First of
+        all, adding and removing vertices is particularly bad for performance
+        (since that could involve allocating more memory, which can slow things
+        down as memory is shuffled around, and can also cause crashes because
+        Blender’s Python API is dumb). The second problem is that I’m doing work
+        I don’t need to do. Since I’m always working with cubes, the arrangement
+        of edges and faces will stay the same, regardless of where the cubes are
+        positioned and/or scaled. Both of these issues pointed me towards the
+        simplest solution: I should be modifying the vertices (and only the
+        vertices) of a mesh where the number of vertices is fixed. I’ll
+        basically just be reusing the same cubes every frame.
+      </p>
 
-            <p>But there’s a problem with this method: Since the number of vertices is fixed, any given mesh needs to have the most vertices it will ever need, meaning that, in cases where only a few are actually being used, most are being wasted. To solve this problem, I just moved the unused vertices extremely far away from the camera (which can only draw objects up to a certain distance). I’m almost certain that graphics libraries these days can recognize that faraway vertices won’t ever be drawn, allowing them to be safely discarded. In addition, with this animation, rendering is extremely fast regardless of the number of vertices on screen (the bottleneck is moving them around), so I’m not concerned at all about drawing wasted vertices anyway.</p>
+      <p>
+        But there’s a problem with this method: Since the number of vertices is
+        fixed, any given mesh needs to have the most vertices it will ever need,
+        meaning that, in cases where only a few are actually being used, most
+        are being wasted. To solve this problem, I just moved the unused
+        vertices extremely far away from the camera (which can only draw objects
+        up to a certain distance). I’m almost certain that graphics libraries
+        these days can recognize that faraway vertices won’t ever be drawn,
+        allowing them to be safely discarded. In addition, with this animation,
+        rendering is extremely fast regardless of the number of vertices on
+        screen (the bottleneck is moving them around), so I’m not concerned at
+        all about drawing wasted vertices anyway.
+      </p>
 
-            <h3>Optimizing Geometry Updates</h3>
-            <p>Later on, I made some more optimizations- namely, I made the JavaScript program (that does the OTLLCA simulations) multithreaded. In computer programming, a “thread” is a single sequence of instructions that a computer executes, like following a step-by-step recipe. The important thing to know about a thread is that you can’t do two steps at once. You must do them one after the next. Most computers these days have the ability to execute multiple threads at once, something a woefully small number of programs actually take advantage of (though, fortunately, many developers are catching on). I made the JavaScript program multithreaded (in other words, allowing the computer to run it multiple times simultaneously, rather than one-after-the-next) in a rather crude way- I simply created multiple processes for it, each of them running a different simulation. </p>
+      <h3>Optimizing Geometry Updates</h3>
+      <p>
+        Later on, I made some more optimizations- namely, I made the JavaScript
+        program (that does the OTLLCA simulations) multithreaded. In computer
+        programming, a “thread” is a single sequence of instructions that a
+        computer executes, like following a step-by-step recipe. The important
+        thing to know about a thread is that you can’t do two steps at once. You
+        must do them one after the next. Most computers these days have the
+        ability to execute multiple threads at once, something a woefully small
+        number of programs actually take advantage of (though, fortunately, many
+        developers are catching on). I made the JavaScript program multithreaded
+        (in other words, allowing the computer to run it multiple times
+        simultaneously, rather than one-after-the-next) in a rather crude way- I
+        simply created multiple processes for it, each of them running a
+        different simulation.
+      </p>
 
-            <p>However, I wasn’t done yet. Despite my efforts, the largest of the simulations often took several seconds to load per frame! This is unacceptable, because it makes it hard for me to preview what I’ve made and allow me to make the fine, subtle changes that lead to a truly professional-looking, polished result. Not to mention it makes render times balloon out of control. I made use of two optimizations to solve this- heuristics that allow me to simply not update vertices that don’t need to be updated.</p>
+      <p>
+        However, I wasn’t done yet. Despite my efforts, the largest of the
+        simulations often took several seconds to load per frame! This is
+        unacceptable, because it makes it hard for me to preview what I’ve made
+        and allow me to make the fine, subtle changes that lead to a truly
+        professional-looking, polished result. Not to mention it makes render
+        times balloon out of control. I made use of two optimizations to solve
+        this- heuristics that allow me to simply not update vertices that don’t
+        need to be updated.
+      </p>
 
-            <p>The first heuristic is extremely simple. Remember how I said that- in many of the patterns- I don’t use all of the vertices? Up until I implemented this optimization, I had been re-hiding all unused vertices every frame- a performance-killing process. I changed that by ignoring vertices I know for sure are already hidden. I can tell which ones are hidden by checking the number of vertices used by the current frame and comparing that number to the number of vertices of the previous frame. If the current frame has more (or equal) vertices, I don’t have to manually hide anything, because it will overwrite the positions of all of the previous frame’s vertices (and more). If the previous frame has more, then it’ll have a few vertices remaining once I update the mesh. Thus, I’ll have to re-hide the vertices it used- which is less than all of them, i.e. better than my previous method.</p>
+      <p>
+        The first heuristic is extremely simple. Remember how I said that- in
+        many of the patterns- I don’t use all of the vertices? Up until I
+        implemented this optimization, I had been re-hiding all unused vertices
+        every frame- a performance-killing process. I changed that by ignoring
+        vertices I know for sure are already hidden. I can tell which ones are
+        hidden by checking the number of vertices used by the current frame and
+        comparing that number to the number of vertices of the previous frame.
+        If the current frame has more (or equal) vertices, I don’t have to
+        manually hide anything, because it will overwrite the positions of all
+        of the previous frame’s vertices (and more). If the previous frame has
+        more, then it’ll have a few vertices remaining once I update the mesh.
+        Thus, I’ll have to re-hide the vertices it used- which is less than all
+        of them, i.e. better than my previous method.
+      </p>
 
-            <p>Another optimization involves situations where I am interpolating between frames- in other words, when the cubes are growing or shrinking. In these instances, any “fully-sized” live cell stays the same. Thus, I shouldn’t have to update any of them. To facilitate this, every time I update the geometry, I check whether I’m still interpolating between the same two generations.</p>
+      <p>
+        Another optimization involves situations where I am interpolating
+        between frames- in other words, when the cubes are growing or shrinking.
+        In these instances, any “fully-sized” live cell stays the same. Thus, I
+        shouldn’t have to update any of them. To facilitate this, every time I
+        update the geometry, I check whether I’m still interpolating between the
+        same two generations.
+      </p>
 
-            <h3>The Titles, GLSL, and OpenGL</h3>
-            <p>I also coded the mechanism that made the titles dissolve the way they do. To accomplish this, I rendered some text on an HTML5 canvas element (basically an image you can edit with JavaScript in the browser), before applying the Conway’s Game of Life rule (B3/S23) to it repeatedly. Considering that the canvas is (as of writing this) 960 x 540 = 518400 pixels, I needed a fast way of applying this rule, or rendering would take a while.</p>
+      <h3>The Titles, GLSL, and OpenGL</h3>
+      <p>
+        I also coded the mechanism that made the titles dissolve the way they
+        do. To accomplish this, I rendered some text on an HTML5 canvas element
+        (basically an image you can edit with JavaScript in the browser), before
+        applying the Conway’s Game of Life rule (B3/S23) to it repeatedly.
+        Considering that the canvas is (as of writing this) 960 x 540 = 518400
+        pixels, I needed a fast way of applying this rule, or rendering would
+        take a while.
+      </p>
 
-            <p>To fix this issue, I implemented Conway’s Game of Life in a GLSL fragment shader. To understand what that means, you first have to understand some of the parts of a computer- namely, the CPU and GPU. Both are basically the “brain” of the computer- they perform calculations, albeit in different ways. The CPU, when executing a thread, can do so extremely quickly. However, it can only run a few simultaneously. The GPU executes single threads a lot more slowly. However, it can run thousands simultaneously. Overall, the GPU’s sheer ability to multitask wins out over the CPU’s speed, allowing it to do more number crunching overall. As such, when a given program can be decomposed into a bunch of things that don’t depend on each other (allowing them to run in parallel), it’s often better to run them on the GPU. GLSL fragment shaders are programs that run on the GPU for every pixel of some given geometry- in other words, exactly what I need to apply the Conway’s Game of Life rule to every pixel on the image. In this case, black (#000000) pixels were dead, and everything else was alive. I also slowly decreased the brightness of each living pixel in order to get that nice fade-out effect.</p>
+      <p>
+        To fix this issue, I implemented Conway’s Game of Life in a GLSL
+        fragment shader. To understand what that means, you first have to
+        understand some of the parts of a computer- namely, the CPU and GPU.
+        Both are basically the “brain” of the computer- they perform
+        calculations, albeit in different ways. The CPU, when executing a
+        thread, can do so extremely quickly. However, it can only run a few
+        simultaneously. The GPU executes single threads a lot more slowly.
+        However, it can run thousands simultaneously. Overall, the GPU’s sheer
+        ability to multitask wins out over the CPU’s speed, allowing it to do
+        more number crunching overall. As such, when a given program can be
+        decomposed into a bunch of things that don’t depend on each other
+        (allowing them to run in parallel), it’s often better to run them on the
+        GPU. GLSL fragment shaders are programs that run on the GPU for every
+        pixel of some given geometry- in other words, exactly what I need to
+        apply the Conway’s Game of Life rule to every pixel on the image. In
+        this case, black (#000000) pixels were dead, and everything else was
+        alive. I also slowly decreased the brightness of each living pixel in
+        order to get that nice fade-out effect.
+      </p>
 
-            <p>It’s also worth noting that GLSL is part of a much larger API called OpenGL (short for Open Graphics Library), a library designed to make working with graphics easier. Many games and computer programs use it under the hood. I was working with the web implementation, WebGL, through another library I had made several months prior for creating image filters. In this case, I modeled Conway’s Game of Life as an image filter that returns the next Game of Life generation.</p>
-            
-            <h3>The Backgrounds</h3>
-            <p>I also used GLSL and OpenGL for some of the environment textures (basically, the fractals you see in the background). The somewhat chaotic-looking one was created using a modified version of a 3D fractal generator I made a while ago (I modified it to be panoramic rather than perspective). This 3D fractal generator uses a technique called raymarching. When raymarching, all 3D objects are treated as signed distance fields (SDFs). An SDF is a mathematical function that basically tells you the closest distance from a given surface at a given point. The SDF of a sphere centered at the origin would be “x^2 + y^2 + z^2 - (radius)^2”, for instance, where x, y, and z are the coordinates at which we’re evaluating the SDF, and radius is the radius of the sphere. </p>
+      <p>
+        It’s also worth noting that GLSL is part of a much larger API called
+        OpenGL (short for Open Graphics Library), a library designed to make
+        working with graphics easier. Many games and computer programs use it
+        under the hood. I was working with the web implementation, WebGL,
+        through another library I had made several months prior for creating
+        image filters. In this case, I modeled Conway’s Game of Life as an image
+        filter that returns the next Game of Life generation.
+      </p>
 
-            <p>To actually perform raymarching, the camera simulates millions of rays of light (usually one per pixel), casting them outwards so they may intersect the geometry. In other methods (e.g. ray casting and ray tracing), calculations would be made to directly find out where these rays intersect the geometry. By contrast, with raymarching, the rays “march” forward in multiple steps, asymptotically approaching the geometry more closely with each step. To avoid taking too big of a step and crossing over the geometry entirely, rays only “march” forward a distance equal to the SDF at their current position. That way, no matter how far they go, they will never reach the surface.</p>
+      <h3>The Backgrounds</h3>
+      <p>
+        I also used GLSL and OpenGL for some of the environment textures
+        (basically, the fractals you see in the background). The somewhat
+        chaotic-looking one was created using a modified version of a 3D fractal
+        generator I made a while ago (I modified it to be panoramic rather than
+        perspective). This 3D fractal generator uses a technique called
+        raymarching. When raymarching, all 3D objects are treated as signed
+        distance fields (SDFs). An SDF is a mathematical function that basically
+        tells you the closest distance from a given surface at a given point.
+        The SDF of a sphere centered at the origin would be “x^2 + y^2 + z^2 -
+        (radius)^2”, for instance, where x, y, and z are the coordinates at
+        which we’re evaluating the SDF, and radius is the radius of the sphere.
+      </p>
 
-            <p>The main advantage of raymarching over other rendering systems is its ability to render surfaces that would be prohibitively expensive via other methods. In the case of my fractals, that’s all thanks to the fact that SDFs can be transformed with little computational cost- they’re just mathematical functions, after all. I started with a cube, performed a reflection on its SDF (by setting each axis to the absolute value of itself), moved it (vector addition), scaled it (vector-scalar multiplication), rotated it (matrix math), and iteratively repeated the process ten, fifteen, or even twenty times (I don’t remember how many). This allows me to effectively render quadrillions of polygons (and almost certainly more) at 60 FPS. By the way, I’ve linked the source code for my fractals below (not the modified panoramic version). I also have a link to a video (not by me) explaining in detail how raymarching and 3D fractals work.</p>
+      <p>
+        To actually perform raymarching, the camera simulates millions of rays
+        of light (usually one per pixel), casting them outwards so they may
+        intersect the geometry. In other methods (e.g. ray casting and ray
+        tracing), calculations would be made to directly find out where these
+        rays intersect the geometry. By contrast, with raymarching, the rays
+        “march” forward in multiple steps, asymptotically approaching the
+        geometry more closely with each step. To avoid taking too big of a step
+        and crossing over the geometry entirely, rays only “march” forward a
+        distance equal to the SDF at their current position. That way, no matter
+        how far they go, they will never reach the surface.
+      </p>
 
-            <p>The other fractal (the big cube with holes, actually called the Menger Sponge) was simply made by copying and pasting smaller cube-like shapes in Blender, and then rendering it in panoramic mode.</p>
+      <p>
+        The main advantage of raymarching over other rendering systems is its
+        ability to render surfaces that would be prohibitively expensive via
+        other methods. In the case of my fractals, that’s all thanks to the fact
+        that SDFs can be transformed with little computational cost- they’re
+        just mathematical functions, after all. I started with a cube, performed
+        a reflection on its SDF (by setting each axis to the absolute value of
+        itself), moved it (vector addition), scaled it (vector-scalar
+        multiplication), rotated it (matrix math), and iteratively repeated the
+        process ten, fifteen, or even twenty times (I don’t remember how many).
+        This allows me to effectively render quadrillions of polygons (and
+        almost certainly more) at 60 FPS. By the way, I’ve linked the source
+        code for my fractals below (not the modified panoramic version). I also
+        have a link to a video (not by me) explaining in detail how raymarching
+        and 3D fractals work.
+      </p>
 
-            <p>As for the star field, that was created using a modified Minkowski voronoi texture in Blender, using a low power to create the cross-shaped star effect. Voronoi diagrams are a type of image involving one or more points, where every pixel in the image is colored based on whichever point is closest to it. Oftentimes, the pixels are colored based on their distances from the closest point (with lighter pixels closer to the center). Of course, the distance can be calculated via the pythagorean theorem, sqrt( (dx)^2 + (dy)^2 ) (where “sqrt” means “square root”; and “dx” and “dy” are the x and y distances from the pixel to the closest point). A Minkowski voronoi diagram is a superset of voronoi diagrams where dx and dy can be raised to any power, not just 2. And it turns out that they create star shapes when raised to a power between 0 and 1. So that’s what I did. A few noise layers later and I have some nice space dust and a cool-looking star field.</p>
+      <p>
+        The other fractal (the big cube with holes, actually called the Menger
+        Sponge) was simply made by copying and pasting smaller cube-like shapes
+        in Blender, and then rendering it in panoramic mode.
+      </p>
 
-            <h3>The Audio</h3>
-            <p>Now let’s talk about the audio. I made it all myself. The audio at the beginning consisted of me tapping and dropping objects onto my desk. I then applied echo, reverb, and pitch shift filters to them using Audacity (a free audio manipulation tool). The low, constant ambience sound was simply me breathing outwards, creating an “h” sound, slowed down and with reverb.</p>
+      <p>
+        As for the star field, that was created using a modified Minkowski
+        voronoi texture in Blender, using a low power to create the cross-shaped
+        star effect. Voronoi diagrams are a type of image involving one or more
+        points, where every pixel in the image is colored based on whichever
+        point is closest to it. Oftentimes, the pixels are colored based on
+        their distances from the closest point (with lighter pixels closer to
+        the center). Of course, the distance can be calculated via the
+        pythagorean theorem, sqrt( (dx)^2 + (dy)^2 ) (where “sqrt” means “square
+        root”; and “dx” and “dy” are the x and y distances from the pixel to the
+        closest point). A Minkowski voronoi diagram is a superset of voronoi
+        diagrams where dx and dy can be raised to any power, not just 2. And it
+        turns out that they create star shapes when raised to a power between 0
+        and 1. So that’s what I did. A few noise layers later and I have some
+        nice space dust and a cool-looking star field.
+      </p>
 
-            <p>I made the music in Cakewalk by Bandlab (which used to be called SONAR), a free DAW (digital audio workstation). Most of the sounds themselves were created using Massive, a VST plugin and synthesizer. Notably, Massive was the only paid piece of software I used in this entire project (unless you count Windows, of course).</p>
+      <h3>The Audio</h3>
+      <p>
+        Now let’s talk about the audio. I made it all myself. The audio at the
+        beginning consisted of me tapping and dropping objects onto my desk. I
+        then applied echo, reverb, and pitch shift filters to them using
+        Audacity (a free audio manipulation tool). The low, constant ambience
+        sound was simply me breathing outwards, creating an “h” sound, slowed
+        down and with reverb.
+      </p>
 
-            <h3>Goals and Intentions</h3>
-            <p>On a much more abstract level, my intended viewing experience with “Voxel Life” was to create something eerie, mysterious, and alien, qualities which reflect the nature of cellular automata. On some levels, they’re a reflection of the universe itself- they’re a system of simple rules that can lead to unimaginably complex emergent behavior. Seriously, people have made computers, self-replicating machines, and a whole lot of other fascinating stuff in Conway’s Game of Life.</p>
+      <p>
+        I made the music in Cakewalk by Bandlab (which used to be called SONAR),
+        a free DAW (digital audio workstation). Most of the sounds themselves
+        were created using Massive, a VST plugin and synthesizer. Notably,
+        Massive was the only paid piece of software I used in this entire
+        project (unless you count Windows, of course).
+      </p>
 
-            <p>Near the beginning, I used all the ambient and footstep-like sounds to create an unsettling, cave-like atmosphere with a vast, empty world. However, once the two gliders collided, I shifted to a much more excited (but still strange and alien) mood. I made use of bright, contrasting color schemes; the strange, almost organic-looking growth of the patterns; and wide-angle cameras to make the patterns seem almost like giant, imposing, alien beings or machines. I hope the music reflected this as well- I made it loud, chaotic, and slightly dissonant to add to to the “alien” feeling, and somewhat static-y to make it seem even more unfamiliar (since static implies that you’re far away from any familiar location- after all, if you try to contact anyone you know, static is all you’ll get. Yeah, that’s probably a bit of a stretch, I know). </p>
-            
-            <p>The whole thing is almost a metaphor for the emergent behavior I mentioned before- a simple starting pattern can lead to much more complex phenomena, since all the more intricate patterns are only shown after the two gliders collide in the beginning, producing hundreds of generations’ worth of chaos (Gliders are a specific five-cell pattern in B3/S23 that move diagonally as successive generations occur. In the two-glider mess, two gliders collide in such a way that the resulting pattern takes 530 generations to stabilize).</p>
-            
-            <p>On a much more visceral level, I simply find the patterns to be visually appealing. I don’t know why, exactly, except that “monkey brain like cool pattern ooh ooh aah aah”. I find that there’s enough order for the patterns to not just look like random noise, yet there’s enough chaos for them to not simply be a boring, repeating, tiled pattern.</p>
+      <h3>Goals and Intentions</h3>
+      <p>
+        On a much more abstract level, my intended viewing experience with
+        “Voxel Life” was to create something eerie, mysterious, and alien,
+        qualities which reflect the nature of cellular automata. On some levels,
+        they’re a reflection of the universe itself- they’re a system of simple
+        rules that can lead to unimaginably complex emergent behavior.
+        Seriously, people have made computers, self-replicating machines, and a
+        whole lot of other fascinating stuff in Conway’s Game of Life.
+      </p>
 
-            <h3>Patterns</h3>
+      <p>
+        Near the beginning, I used all the ambient and footstep-like sounds to
+        create an unsettling, cave-like atmosphere with a vast, empty world.
+        However, once the two gliders collided, I shifted to a much more excited
+        (but still strange and alien) mood. I made use of bright, contrasting
+        color schemes; the strange, almost organic-looking growth of the
+        patterns; and wide-angle cameras to make the patterns seem almost like
+        giant, imposing, alien beings or machines. I hope the music reflected
+        this as well- I made it loud, chaotic, and slightly dissonant to add to
+        to the “alien” feeling, and somewhat static-y to make it seem even more
+        unfamiliar (since static implies that you’re far away from any familiar
+        location- after all, if you try to contact anyone you know, static is
+        all you’ll get. Yeah, that’s probably a bit of a stretch, I know).
+      </p>
 
-            <p>As for the actual patterns that I used, I started with a pattern known as the “Two-glider mess,” using the B3/S23 rule. Remember that “B3/S23” and “Conway’s Game of Life” are exactly the same thing.</p>
+      <p>
+        The whole thing is almost a metaphor for the emergent behavior I
+        mentioned before- a simple starting pattern can lead to much more
+        complex phenomena, since all the more intricate patterns are only shown
+        after the two gliders collide in the beginning, producing hundreds of
+        generations’ worth of chaos (Gliders are a specific five-cell pattern in
+        B3/S23 that move diagonally as successive generations occur. In the
+        two-glider mess, two gliders collide in such a way that the resulting
+        pattern takes 530 generations to stabilize).
+      </p>
 
-            <p>The next pattern is a 3D pattern in the B1/S rule. In this rule, cells are born if they have a single cell, and die in all other cases. If you start with a single cell (which is what I did), you end up with a pattern which constantly replicates itself.</p>
+      <p>
+        On a much more visceral level, I simply find the patterns to be visually
+        appealing. I don’t know why, exactly, except that “monkey brain like
+        cool pattern ooh ooh aah aah”. I find that there’s enough order for the
+        patterns to not just look like random noise, yet there’s enough chaos
+        for them to not simply be a boring, repeating, tiled pattern.
+      </p>
 
-            <p>The pattern after that is a stacked 2D R-pentomino, a well-known B3/S23 pattern that takes over 1000 generations to stabilize.</p>
+      <h3>Patterns</h3>
 
-            <p>The next one is a cube, and used the 3D rule B459/S59. This rule leads to interesting behavior- since any cell adjacent to the flat face of a cube has nine (and anything with nine neighbors neighbors, the edges of the cube shrink and propagate outwards.</p>
+      <p>
+        As for the actual patterns that I used, I started with a pattern known
+        as the “Two-glider mess,” using the B3/S23 rule. Remember that “B3/S23”
+        and “Conway’s Game of Life” are exactly the same thing.
+      </p>
 
-            <p>The next three are all stacked 2D replicators, each starting with a single cell. All three rules followed the B1 criterion, but the first two had other options for cell birth/survival.</p>
+      <p>
+        The next pattern is a 3D pattern in the B1/S rule. In this rule, cells
+        are born if they have a single cell, and die in all other cases. If you
+        start with a single cell (which is what I did), you end up with a
+        pattern which constantly replicates itself.
+      </p>
 
-            <p>The next one is stacked 2D generations of a B3/S23 pattern called “bunnies,” known for taking over 2000 generations to stabilize (though I only showed about 500 generations of it). </p>
+      <p>
+        The pattern after that is a stacked 2D R-pentomino, a well-known B3/S23
+        pattern that takes over 1000 generations to stabilize.
+      </p>
 
-            <p>The final one is a 3D pattern starting with a single cell, following the rule B1/S2345678. Since the rule is a B1 rule, it grows chaotically.</p>
+      <p>
+        The next one is a cube, and used the 3D rule B459/S59. This rule leads
+        to interesting behavior- since any cell adjacent to the flat face of a
+        cube has nine (and anything with nine neighbors neighbors, the edges of
+        the cube shrink and propagate outwards.
+      </p>
 
-            <h3>Further Information</h3>
-            <p><a href="https://github.com/radian628/voxel-life">Source Code</a></p>
-            <p><a href="https://www.conwaylife.com/wiki/Cellular_automaton">Info on Cellular Automata</a></p>
-            <p><a href="https://www.conwaylife.com/wiki/Main_Page">Patterns in Life-like Cellular Automata</a></p>
-            <p><a href="https://content.wolfram.com/uploads/sites/13/2018/02/01-3-1.pdf">Paper on 3D Game of Life</a></p>
-            <p><a href="https://conwaylife.com/wiki/Two-glider_mess">Two-glider Mess (first pattern in the video)</a></p>
-            <p><a href="https://radian628.github.io/3d-fractals/index.html">3D Fractals (some of the backgrounds)</a></p>
-            <p><a href="https://github.com/radian628/3d-fractals">3D Fractals Source Code</a></p>
-            <p><a href="https://www.youtube.com/watch?v=PoLiJaZoej0&list=PLc0hPLqxOOE8eDIjVu47KGyTrCQFIccdd">Explanation of 3D Fractals (Parts 1, 2, and 3)</a></p>
+      <p>
+        The next three are all stacked 2D replicators, each starting with a
+        single cell. All three rules followed the B1 criterion, but the first
+        two had other options for cell birth/survival.
+      </p>
 
-        </main>
-    </body>
+      <p>
+        The next one is stacked 2D generations of a B3/S23 pattern called
+        “bunnies,” known for taking over 2000 generations to stabilize (though I
+        only showed about 500 generations of it).
+      </p>
+
+      <p>
+        The final one is a 3D pattern starting with a single cell, following the
+        rule B1/S2345678. Since the rule is a B1 rule, it grows chaotically.
+      </p>
+
+      <h3>Further Information</h3>
+      <p><a href="https://github.com/radian628/voxel-life">Source Code</a></p>
+      <p>
+        <a href="https://www.conwaylife.com/wiki/Cellular_automaton"
+          >Info on Cellular Automata</a
+        >
+      </p>
+      <p>
+        <a href="https://www.conwaylife.com/wiki/Main_Page"
+          >Patterns in Life-like Cellular Automata</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://content.wolfram.com/uploads/sites/13/2018/02/01-3-1.pdf"
+          >Paper on 3D Game of Life</a
+        >
+      </p>
+      <p>
+        <a href="https://conwaylife.com/wiki/Two-glider_mess"
+          >Two-glider Mess (first pattern in the video)</a
+        >
+      </p>
+      <p>
+        <a href="https://radian628.github.io/3d-fractals/index.html"
+          >3D Fractals (some of the backgrounds)</a
+        >
+      </p>
+      <p>
+        <a href="https://github.com/radian628/3d-fractals"
+          >3D Fractals Source Code</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://www.youtube.com/watch?v=PoLiJaZoej0&list=PLc0hPLqxOOE8eDIjVu47KGyTrCQFIccdd"
+          >Explanation of 3D Fractals (Parts 1, 2, and 3)</a
+        >
+      </p>
+    </main>
+  </body>
 </html>
