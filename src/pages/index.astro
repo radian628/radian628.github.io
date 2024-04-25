@@ -1,0 +1,231 @@
+---
+
+const projects = [
+	{
+		name: "Desmos Plane",
+		description: "3D plane game that runs in Desmos Graphing Calculator",
+		imageLink: "/images/desmos-plane.jpg",
+		link: "https://www.desmos.com/calculator/l7nehb64nz"
+	},
+	{
+		name: "Raymarching Engine",
+		description: "A 3D renderer powered by distance fields. Supports realtime global illumination (that cool thing that raytracers do)",
+		imageLink: "/images/raymarching-engine.jpg",
+		link: "https://radian628.github.io/breakdowns/raymarching-engine"
+	},
+	{
+		name: "Voxel Life",
+		description: "A video showcasing variations of Conway's Game of Life in 3D.",
+		imageLink: "/images/voxel-life.jpg",
+		link: "https://radian628.github.io/breakdowns/voxel-life/"
+	},
+	{
+		name: "Photorealistic Desmos Fractals",
+		description: "Photorealistic 3D fractals implemented within Desmos Graphing Calculator.",
+		imageLink: "/images/photorealistic-desmos-fractals.jpg",
+		link: "https://www.youtube.com/watch?v=yUzCsXDE-R8"
+	},
+	{
+		name: "Nebula Fractals",
+		description: "The endpoints of 3D tree fractals, which seem to look like nebulae.",
+		imageLink: "/images/nebula-fractals.jpg",
+		link: "https://radian628.github.io/breakdowns/nebula-fractals"
+	},
+	{
+		name: "Control Freak",
+		description: "A game I made with my friend Will about controlling a tower defense game with too many controls!",
+		imageLink: "/images/control-freak.png",
+		link: "https://radian628.itch.io/control-freak"
+	},
+	{
+		name: "Balls",
+		description: "Balls",
+		imageLink: "/images/balls.jpg",
+		link: "https://radian628.github.io/balls"
+	},
+	{
+		name: "Fractal Zoomer",
+		description: "Zoom into and explore various 2D fractals.",
+		imageLink: "/images/fractal-zoomer.png",
+		link: "https://radian628.github.io/small-projects/fractal-zoomer/dist/index.html"
+	},
+	{
+		name: "'Ducks' Fractal",
+		description: "A fractal renderer for a fractal known as the 'ducks' fractal.",
+		imageLink: "/images/ducks-fractal.jpg",
+		link: "https://radian628.github.io/ducks-fractal/index.html"
+	},
+	{
+		name: "LISPsmos",
+		description: "LISP-inspired language that compiles to Desmos expressions",
+		imageLink: "/images/lispsmos.jpg",
+		link: "https://radian628.github.io/lispsmos"
+	},
+	{
+		name: "Divide and Conquer",
+		description: "Old, unfinished puzzle game I made in 2019 that I found randomly on my desktop.",
+		imageLink: "/images/divide-and-conquer.JPG",
+		link: "https://radian628.github.io/divide-and-conquer/"
+	},
+	{
+		name: "Edge-replacement Fractals",
+		description: "Generate fractals (e.g. Dragon Curve) by recursively replacing sets of edges with smaller edges.",
+		imageLink: "/images/edge-replace.jpg",
+		link: "https://radian628.github.io/edge-replace/"
+	},
+	{
+		name:"Free Bitcoin",
+		description: "Click here for free bitcoin!",
+		imageLink: "/images/bitcoin.png",
+		link: "https://radian628.github.io/important"
+	},
+	{
+		name: "Tree Fractal Maker",
+		description: "Create tree fractals in a browser.",
+		imageLink: "/images/tree-fractals.png",
+		link: "https://radian628.github.io/small-projects/tree-fractal-maker/index.html"
+	}
+]
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+
+		<title>Radian628</title>
+		<script is:inline>
+      // This must be inline to stop FOUC
+
+      // Get the theme from local storage, otherwise color scheme preference, otherwise light
+      const theme = (() => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
+      })();
+
+      // Set a data attribute for Pico, but don't store it
+      // (users may change their preference between visits)
+      document.documentElement.setAttribute("data-theme", theme);
+    </script>
+	</head>
+	<body>
+		<section class="hero">
+			<h1>Radian628</h1>
+			<div class="socials"><a href="https://www.youtube.com/radian628">YouTube</a><a href="https://github.com/radian628/">GitHub</a></div>
+			<p>Welcome to my compendium of technological horrors and inane ramblings!</p>
+		</section>
+		<section class="projects">
+			{projects.map(p => 
+			<article class="project-card" style={`background-image: url("${p.imageLink}")`}>
+				<a href={p.link}  class="contrast">
+					<div class="project-name-desc">
+						<h2>{p.name}</h2>
+						<p>{p.description}</p>
+					</div>
+				</a>
+			</article>
+			)}
+		</section>
+	</body>
+</html>
+<style lang="scss">
+	@use "node_modules/@picocss/pico/scss/pico";
+
+	@media (prefers-color-scheme: light) {
+		:root {
+			--background-blur-color: #fff8;
+		}
+	}
+	[data-theme="light"] {
+		--background-blur-color: #fff8;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--background-blur-color: #12121288;
+		}
+	}
+	[data-theme="dark"] {
+		--background-blur-color: #12121288;
+	}
+
+
+	body {
+		min-height: 100vh;
+		padding: 20px;
+	}
+
+	.hero {
+		width: 100%;
+		height: 50vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+
+	.socials {
+		display: flex;
+		justify-content: center;
+
+		a {
+			margin: 1rem 2rem;
+		}
+	}
+
+	.projects {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 1rem;
+	}
+
+	.project-card {
+		a {
+			text-decoration: none;
+			height: 0;
+			padding-bottom: 100%;
+		}
+
+		padding: 0;
+		background-size: contain;
+
+		display: flex;
+		flex-direction: column;
+		height: 0;
+		padding-bottom: 100%;
+	
+		border-radius: 1rem;
+		overflow: hidden;
+
+		transition: transform 0.25s, filter 0.25s;
+	}
+
+	.project-card:hover {
+		transform: translateY(-0.5rem);
+	}
+
+	.project-name-desc {
+		background-color: var(--background-blur-color);
+		padding: 0.6rem;
+
+		h2 {
+			font-size: 1.2rem;
+			margin: 0;
+			// color: var(--color);
+		}
+
+		p {
+			margin: 0;
+			// color: var(--color);
+		}
+	}
+
+</style>
