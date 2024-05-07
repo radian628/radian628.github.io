@@ -37,7 +37,7 @@ Another problem with using Desmos directly is the need for code
         very nice for this because of its simple AST&mdash; rather than
         undergoing the error-prone process of generating LaTeX strings for
         Desmos, I could create a LISPsmos AST.
-</p> <h2 data-astro-cid-s4mxocay>The Start of Desmos Plane</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/vkgetj1klr?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h2 data-astro-cid-s4mxocay>The Start of Desmos Plane</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/vkgetj1klr?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 Above is the first graph of what eventually became Desmos Plane. It's
         little more than a 3D renderer with a static scene, depth-sorted
         polygons, and lambertian shading. The project was implemented in
@@ -48,14 +48,14 @@ Above is the first graph of what eventually became Desmos Plane. It's
         run performance tests on my old laptop to ensure that it would run fast
         on more modern devices&mdash; I knew from the beginning that I would
         have to fine-tune this to an absurd degree.
-</p> <h3 data-astro-cid-s4mxocay>Movement and Collisions</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/gltnvxalew?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Movement and Collisions</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/gltnvxalew?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This next update added collisions and movement. It's still quite crude,
         but amazingly, it works. I used the
 <a href="https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm" data-astro-cid-s4mxocay>Moller-Trumbore Ray-triangle Intersection Formula</a>
 to figure out whether the plane (modeled as a line segment from its
         previous to its next position) intersects the scene (modeled as a list
         of triangles).
-</p> <h3 data-astro-cid-s4mxocay>Fog and "Lazy" Camera</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/c2p84khwsg?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Fog and "Lazy" Camera</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/c2p84khwsg?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 Note: You'll have to start the ticker manually for this one. In this
         update I experimented with two new features. The first one is fog that
         fades into the distance, eventually blending the farthest polygons in
@@ -67,7 +67,7 @@ Note: You'll have to start the ticker manually for this one. In this
         of distance proportional to the distance between the actual and target
         position. The result is that the camera lazily follows the plane, but
         picks up the pace if it gets too far away.
-</p> <h3 data-astro-cid-s4mxocay>Dynamic Lighting and Dynamic Loading</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/9oykzmzf9v?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Dynamic Lighting and Dynamic Loading</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/9oykzmzf9v?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 You'll have to manually start the ticker for this one too (go to the
         actual Desmos site rather than the embed). At this point I had expanded
         the map quite a bit. This version introduced two new features: Changing
@@ -90,7 +90,7 @@ One <em data-astro-cid-s4mxocay>very important</em> feature I also added at this
         Otherwise, it isn't, and thus does not factor into the calculations. For
         further speedup, I only recalculate the displayed terrain pieces once
         every second or so.
-</p> <h2 data-astro-cid-s4mxocay>The Beginnings of a Game</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/a7wfqg7dma?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h2 data-astro-cid-s4mxocay>The Beginnings of a Game</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/a7wfqg7dma?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This update brought quite a few changes. The most striking one is the
         new map: I decided to abandon the test map and attempt to make something
         with more scenery and with more intent on being an engaging level. The
@@ -99,21 +99,21 @@ This update brought quite a few changes. The most striking one is the
         you've reached a new level ("Checkpoint", in this case) and saves your
         progress. Finally, I also got rid of the dynamic lighting for
         performance reasons. You'll soon see that becoming a trend.
-</p> <h3 data-astro-cid-s4mxocay>Main Menu</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/ngwgwcc9pz?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Main Menu</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/ngwgwcc9pz?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This update added a menu system to Desmos Plane, as well as a work in
         progress level select screen. The menu screen is just a piece of terrain
         positioned far away from the rest of the level.
-</p> <h3 data-astro-cid-s4mxocay>Phone Mode</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/kqial3a2vv?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Phone Mode</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/kqial3a2vv?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This update to Desmos Plane added Phone Mode. Phone Mode is expected to
         be played in portrait mode. It moves the controller near the bottom of
         the screen to avoid one's finger from blocking their view.
-</p> <h2 data-astro-cid-s4mxocay>The Rewrite</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/3rrmensbcz?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h2 data-astro-cid-s4mxocay>The Rewrite</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/3rrmensbcz?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 At this point I began to realize that Desmos Plane was running a bit
         slow. As a result, I decided to rewrite the entire engine from scratch.
         Above is an early build of the engine. Once again, you'll need to enter
         this one on Desmos itself to try it, since the ticker isn't enabled by
         default.
-</p> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/uukuvujqwx?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/uukuvujqwx?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 Here is a much more complete build of the rewrite, containing nearly all
         of the features I had previously. I also did a bit of playtesting and
         came to the conclusion that the start of the game was far too difficult.
@@ -131,7 +131,7 @@ Another very visible change I implemented at this stage was the grass.
         This was another feature I eventually removed&mdash; it clashed somewhat
         with the low-poly aesthetic of the game, had performance issues, and did
         not play nicely with the depth sorting.
-</p> <h3 data-astro-cid-s4mxocay>Graphical Improvements</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/6kvoz4ytti?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Graphical Improvements</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/6kvoz4ytti?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This next update brought with it a variety of graphical improvements. If
         you look at the previous build, you'll notice that the polygons are all
         a flat color. In this update, I re-added shading, giving polygons a
@@ -151,7 +151,7 @@ A third, very conspicuous feature I added is the sun. The sun is just a
         sun. The lens flare consists of several points which exist on the line
         segment connecting the sun and the center of the screen, scaled based on
         the distance from the sun to the center of the screen.
-</p> <h3 data-astro-cid-s4mxocay>Compile-time Shadow Casting</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/x01ihri17z?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Compile-time Shadow Casting</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/x01ihri17z?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 I made a subtle change to Desmos Plane during this update: I changed the
         color scheme. Before, it was much more vibrant and saturated. This
         update muted the colors somewhat. I found that this made it look a lot
@@ -212,7 +212,7 @@ Of course, there are limitations of this method: For one thing, it fails
         computer graphics, you can never accurately reproduce everything. And
         after flying through the levels a few times, I decided that it was
 <em data-astro-cid-s4mxocay>good enough</em>.
-</p> <h3 data-astro-cid-s4mxocay>Clouds</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/cwhrxcqtpp?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Clouds</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/cwhrxcqtpp?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This update added clouds. The clouds are a collection of coordinate
         points behind the rest of the geometry. They are also toggleble within
         the settings menu, just like the grass.
@@ -220,12 +220,12 @@ This update added clouds. The clouds are a collection of coordinate
 The observant viewer may also noticed that I switched from SemVer to
         CalVer. Eventually I even dropped CalVer, feeling too lazy to keep up
         any kind of versioning scheme.
-</p> <h3 data-astro-cid-s4mxocay>Timers</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/ekf45jva3a?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Timers</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/ekf45jva3a?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This next update introduced a way of timing runs, as well as the
         bronze/silver/gold system, encouraging users to get the best times along
         with completing the level. As you likely noticed, it's somewhat buggy at
         this stage.
-</p> <h3 data-astro-cid-s4mxocay>Aggressive Performance Optimization</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/agzdgq6kxu?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h3 data-astro-cid-s4mxocay>Aggressive Performance Optimization</h3> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/agzdgq6kxu?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 At this stage, Desmos Plane hit a turning point. I was debating whether
         I should focus on making the game <em data-astro-cid-s4mxocay>look good</em> or
 <em data-astro-cid-s4mxocay>run fast</em>. I had no idea what to do in this regard because it
@@ -251,13 +251,13 @@ In hindsight, I don't know if this was a good decision. My laptop is an
         the desmos <em data-astro-cid-s4mxocay>Art</em> contest. While the judges explicitly noted that
         they cared about performance, I think I lost sight of the larger goal of
         making something aesthetically pleasing.
-</p> <h2 data-astro-cid-s4mxocay>The Release</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/dbrcz5kn1i?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h2 data-astro-cid-s4mxocay>The Release</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/dbrcz5kn1i?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 At this point, the only major change I was making was adding levels and
         making minor bugfixes. This is the final result of that&mdash; the first
         official release of Desmos Plane. This isn't the one that's most widely
         known, nor is it the one that I submitted to Desmos in the end. But this
         is the first version I consider complete.
-</p> <h2 data-astro-cid-s4mxocay>The Full Release</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe.html?url=https://www.desmos.com/calculator/l7nehb64nz?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
+</p> <h2 data-astro-cid-s4mxocay>The Full Release</h2> <iframe src="/breakdowns/desmos-plane/lazy-iframe?url=https://www.desmos.com/calculator/l7nehb64nz?embed" height="500" loading="lazy" style="border: 1px solid #ccc" frameborder="0" data-astro-cid-s4mxocay></iframe> <p data-astro-cid-s4mxocay>
 This is the Desmos Plane I ultimately submitted to the art contest after
         making a few minor patches.
 </p> </main> </body></html>
