@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body style="display: flex; justify-content: center">
+    <button style="font-size: 3em">Click to Load</button>
+    <script>
+      document.getElementsByTagName("button")[0].onclick = () => {
+        window.location.href = new URLSearchParams(window.location.search).get(
+          "url"
+        );
+      };
+    </script>
+  </body>
+</html>
