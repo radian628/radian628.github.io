@@ -1,0 +1,217 @@
+<!DOCTYPE html><html> <head><link rel="stylesheet" href="/_astro/lazy-evaluation.Dd5S6X1Y.css"></head> <body> <main> <h1 id="lazy-evaluation-explained-with-javascript">Lazy Evaluation Explained with JavaScript</h1>
+<p>Say you’re implementing some kind of game that has red, green, and blue game pieces.
+As such, you often find yourself creating branching logic following the same structure—
+do one thing if you’re on a red square, another thing if you’re on a green square, and yet
+another thing if you’re on a blue square. In other words, you end up with many patterns like this:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">let</span> output<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// do something</span>
+  output <span class="token operator">=</span> something<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// do something else</span>
+  output <span class="token operator">=</span> something<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// do yet another thing</span>
+  output <span class="token operator">=</span> something<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// do something with output</span>
+</code></pre>
+<p>You decide that you don’t want to keep repeating this annoying if/else structure, so you decide to refactor it into a function:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">branchOnColor</span><span class="token punctuation">(</span><span class="token parameter">color<span class="token punctuation">,</span> ifRed<span class="token punctuation">,</span> ifGreen<span class="token punctuation">,</span> ifBlue</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ifRed<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ifGreen<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ifBlue<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>There’s one new problem, however:
+Every parameter in this function is evaluated <em>before</em> being passed into it.
+Say you have some expensive computation that only happens if the color is <code>"green"</code>.
+In the if-else version above, this computation would only happen
+if the <code>if (color == "green")</code> branch was true. On the other hand, in the function version,
+this computation <em>always</em> happens <em>regardless</em> of whether <code>color == "green"</code>.
+Notice how— in this example below— even though we’re passing in <code>"red"</code> into
+<code>branchOnColor</code>, it <em>still</em> needs to compute the value of <code>expensiveComputation</code>.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">branchOnColor</span><span class="token punctuation">(</span>
+  <span class="token string">"red"</span><span class="token punctuation">,</span>
+  <span class="token function">cheapComputation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">expensiveComputation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// always runs, even if color is NOT "green"!!!</span>
+  <span class="token function">cheapComputation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>How could we make this more efficient?</p>
+<h2 id="call-by-name-semantics">Call-by-name Semantics</h2>
+<p>Let’s make one subtle change to our <code>branchOnColor</code> function.
+For reference, here’s how it is now.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">branchOnColor</span><span class="token punctuation">(</span><span class="token parameter">color<span class="token punctuation">,</span> ifRed<span class="token punctuation">,</span> ifGreen<span class="token punctuation">,</span> ifBlue</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ifRed<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ifGreen<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ifBlue<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Let’s change it to expect <code>ifRed</code>, <code>ifGreen</code>, and <code>ifBlue</code> to be callback functions.
+Then, instead of returning them directly, it will <em>call</em> them first.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">branchOnColor</span><span class="token punctuation">(</span><span class="token parameter">color<span class="token punctuation">,</span> ifRed<span class="token punctuation">,</span> ifGreen<span class="token punctuation">,</span> ifBlue</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifRed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ifRed -> ifRed()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifGreen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ifGreen -> ifGreen()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifBlue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ifBlue -> ifBlue()</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Now, when we use <code>branchOnColor</code>, it won’t actually evaluate the <code>ifGreen</code> expression
+unless it reaches that branch of the if statement, because now it’s a function that will
+be run <em>later</em> rather than <em>now</em>.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">branchOnColor</span><span class="token punctuation">(</span>
+  <span class="token string">"red"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">cheapComputation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">expensiveComputation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">cheapComputation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>So this fixed our problem for this example. This idea of deferring computations until they’re
+actually needed within a function is known as “call-by-name” or “pass-by-name”.
+In other words, we could say that <code>ifRed</code>, <code>ifGreen</code>, and <code>ifBlue</code> are being passed by name.</p>
+<h2 id="call-by-need-semantics">Call-by-need Semantics</h2>
+<p>However, let’s say we change the game so that it now supports “dead” game pieces.
+We find that the special case for “dead” game pieces comes up a lot, and that we
+don’t really care what color a piece is when it’s dead, so we want to give it its own callback.
+As such, we modify the <code>branchOnColor</code> function like so:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">branchOnColor</span><span class="token punctuation">(</span><span class="token parameter">isDead<span class="token punctuation">,</span> color<span class="token punctuation">,</span> ifRed<span class="token punctuation">,</span> ifGreen<span class="token punctuation">,</span> ifBlue<span class="token punctuation">,</span> ifDead</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isDead<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifDead</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifRed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifGreen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifBlue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The problem is, we’ve now run into the same issue of unnecessary computation we had before,
+this time with <code>color</code>. We won’t always actually <em>use</em> <code>color</code>. If <code>isDead</code> is true,
+then we never need to access <code>color</code>. Like before, we can wrap <code>color</code> in a function
+to defer its computation until it’s actually needed.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">branchOnColor</span><span class="token punctuation">(</span><span class="token parameter">isDead<span class="token punctuation">,</span> color<span class="token punctuation">,</span> ifRed<span class="token punctuation">,</span> ifGreen<span class="token punctuation">,</span> ifBlue<span class="token punctuation">,</span> ifDead</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isDead<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifDead</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// color -> color()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">color</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifRed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// color -> color()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">color</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifGreen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// color -> color()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">color</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifBlue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>And here’s an example of how we could use this new function.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">branchOnColor</span><span class="token punctuation">(</span>
+  <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// isDead</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">expensiveColor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// color</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ifRed</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ifGreen</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ifBlue</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// ifDead</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>But wait! Now we have <em>another</em> problem! If we look back to the <code>branchOnColor</code> function,
+you’ll notice that we run <code>color()</code> up to three times. In fact, <code>color()</code> <em>does</em> run three times
+if our color happens to be blue.</p>
+<p>We might have deferred <code>color</code>’s execution, but we also ended up unnecessarily calculating
+it more times than it needs to be calculated.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">branchOnColor</span><span class="token punctuation">(</span><span class="token parameter">isDead<span class="token punctuation">,</span> color<span class="token punctuation">,</span> ifRed<span class="token punctuation">,</span> ifGreen<span class="token punctuation">,</span> ifBlue<span class="token punctuation">,</span> ifDead</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isDead<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifDead</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// first call to color()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">color</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"red"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifRed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// second call to color()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">color</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"green"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifGreen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// third call to color()</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">color</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"blue"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ifBlue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>To fix this, we’ll have to create a mechanism to <em>cache</em> the result from <code>color</code>.
+It should be a function that <em>takes a callback function <code>f</code> as input</em> and returns
+another function as output. The first time this cached function is called, it should
+call <code>f</code> and store the result. Subsequent times, it should just return the stored result.
+Here is the implementation of this <code>cache</code> function:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">cache</span><span class="token punctuation">(</span><span class="token parameter">f</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> result<span class="token punctuation">;</span>
+  <span class="token keyword">let</span> isCached <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token comment">// if not cached, run f; otherwise return stored result</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isCached<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      result <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      isCached <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Now we can cache the value of <code>color</code> to make sure it is only computed at most once:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">branchOnColor</span><span class="token punctuation">(</span>
+  <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// isDead</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">expensiveColor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// color</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ifRed</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ifGreen</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// ifBlue</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// ifDead</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>This idea of not only <em>deferring computation</em> until it’s needed, but also
+<em>caching it</em> so it’s only computed at most once, is called “call-by-need”
+or “pass-by-need”.
+In other words, we could say that <code>color</code> is being passed by need.</p>
+<p>Another more common name for pass-by-need is <strong>lazy evaluation</strong>— “lazy”
+because we don’t bother to compute it until it’s absolutely necessary, and when
+we do, we don’t do any more work than we need to do.</p>
+<h2 id="why-even-bother">Why even bother?</h2>
+<p>You might be wondering why one should even bother with this. After all, it adds a lot
+of boilerplate and complexity to JavaScript code. I’m sure that if you’re a seasoned
+JS programmer, you’d’ve thought of far more elegant solutions to these problems than
+the ones I’ve just described.</p>
+<p>The neat thing about lazy evaluation is that other languages— like Haskell—
+have it as a <em>default</em>. In other words, all the caching and wrapping in callbacks is
+done <em>automatically</em>.</p>
+<p>Here’s an example of the code snippet above implemented in Haskell. No <code>cache</code> or <code>() =></code> needed!</p>
+<pre class="language-hs" data-language="hs"><code is:raw="" class="language-hs"><span class="token comment">-- Haskell syntax are somewhat similar to shell commands</span>
+<span class="token comment">-- functions and arguments are separated with whitespace</span>
+<span class="token comment">-- no commas or parentheses needed</span>
+<span class="token hvariable">branchOnColor</span>
+  <span class="token constant">True</span>
+  <span class="token hvariable">expensiveColor</span>
+  <span class="token hvariable">blablabla</span>
+  <span class="token hvariable">blablabla</span>
+  <span class="token hvariable">blablabla</span>
+  <span class="token hvariable">blablabla</span>
+</code></pre>
+<p>Compare this to the equivalent JavaScript version:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token comment">// if you're wondering why *everything* is being cached in this example,</span>
+<span class="token comment">// this is because Haskell caches everything.</span>
+<span class="token function">branchOnColor</span><span class="token punctuation">(</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">expensiveColor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">cache</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">blablabla</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> </main> </body></html>

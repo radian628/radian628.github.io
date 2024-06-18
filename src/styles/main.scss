@@ -1,0 +1,36 @@
+@use "node_modules/@picocss/pico/scss/pico";
+
+main {
+  width: calc(min(90%, 40rem));
+  margin: auto;
+}
+
+iframe {
+  width: 100%;
+}
+
+pre code {
+  color: #121212;
+}
+
+:root {
+  .function {
+    color: #880000;
+  }
+
+  .comment {
+    color: #008800;
+  }
+
+  .keyword {
+    color: #880088;
+  }
+
+  .string {
+    color: #884400;
+  }
+
+  .boolean {
+    color: #000099;
+  }
+}
