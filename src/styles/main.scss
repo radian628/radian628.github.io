@@ -9,11 +9,11 @@ iframe {
   width: 100%;
 }
 
-pre code {
-  color: #121212;
-}
-
 :root {
+  pre code {
+    color: #121212;
+  }
+
   .function {
     color: #880000;
   }
@@ -32,5 +32,33 @@ pre code {
 
   .boolean {
     color: #000099;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:root {
+    pre code {
+      color: #ffffff;
+    }
+
+    .function {
+      color: #ff8888;
+    }
+
+    .comment {
+      color: #88ff88;
+    }
+
+    .keyword {
+      color: #ff88ff;
+    }
+
+    .string {
+      color: #ffaa77;
+    }
+
+    .boolean {
+      color: #8888ff;
+    }
   }
 }
