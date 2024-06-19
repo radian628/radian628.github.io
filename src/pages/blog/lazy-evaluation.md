@@ -106,12 +106,76 @@ branchOnColor(
 ```
 
 So this fixed our problem for this example. This idea of deferring computations until they're
-actually needed within a function is known as "call-by-name" or "pass-by-name".
-In other words, we could say that `ifRed`, `ifGreen`, and `ifBlue` are being passed by name.
+actually needed within a function mimics a method of passing arguments to functions known as
+"call-by-name" or "pass-by-name" semantics.
+
+In a parameter which is passed by name, it is _as if_ every instance of that variable within
+the function body is replaced with the expression used as the function argument. As an example,
+consider the `triple` function:
+
+```js
+function triple(x) {
+  return 3 * x;
+}
+```
+
+If we were to then do the following code:
+
+```js
+let a = 2;
+let b = 4;
+triple(a + b);
+```
+
+Then under how JavaScript _normally_ runs, where numbers are passed by _value_,
+the expression would evaluate like so:
+
+```js
+triple(a + b);
+```
+
+```js
+triple(2 + 4);
+```
+
+```js
+triple(6);
+```
+
+```js
+3 * 6;
+```
+
+```js
+18;
+```
+
+However, in pass by _name_, the `a + b` expression would be substituted into the function _first_, only getting evaluated _after the function is called_. It's as if we're passing in the expression `a + b`
+_itself_ rather than the value `6`.
+
+```js
+triple(a + b);
+```
+
+```js
+3 * (a + b);
+```
+
+```js
+3 * (2 + 4);
+```
+
+```js
+3 * 6;
+```
+
+```js
+18;
+```
 
 ## Call-by-need Semantics
 
-However, let's say we change the game so that it now supports "dead" game pieces.
+Let's say we change the game so that it now supports "dead" game pieces.
 We find that the special case for "dead" game pieces comes up a lot, and that we
 don't really care what color a piece is when it's dead, so we want to give it its own callback.
 As such, we modify the `branchOnColor` function like so:
@@ -239,7 +303,7 @@ of boilerplate and complexity to JavaScript code. I'm sure that if you're a seas
 JS programmer, you'd've thought of far more elegant solutions to these problems than
 the ones I've just described.
 
-The neat thing about lazy evaluation is that other languages&mdash; like Haskell&mdash;
+The neat thing about lazy evaluation is that other languages&mdash; particularly pure functional languages like Haskell&mdash;
 have it as a _default_. In other words, all the caching and wrapping in callbacks is
 done _automatically_.
 
