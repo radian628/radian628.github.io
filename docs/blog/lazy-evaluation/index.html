@@ -80,10 +80,46 @@ be run <em>later</em> rather than <em>now</em>.</p>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>So this fixed our problem for this example. This idea of deferring computations until they’re
-actually needed within a function is known as “call-by-name” or “pass-by-name”.
-In other words, we could say that <code>ifRed</code>, <code>ifGreen</code>, and <code>ifBlue</code> are being passed by name.</p>
+actually needed within a function mimics a method of passing arguments to functions known as
+“call-by-name” or “pass-by-name” semantics.</p>
+<p>In a parameter which is passed by name, it is <em>as if</em> every instance of that variable within
+the function body is replaced with the expression used as the function argument. As an example,
+consider the <code>triple</code> function:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">function</span> <span class="token function">triple</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token number">3</span> <span class="token operator">*</span> x<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>If we were to then do the following code:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+<span class="token function">triple</span><span class="token punctuation">(</span>a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Then under how JavaScript <em>normally</em> runs, where numbers are passed by <em>value</em>,
+the expression would evaluate like so:</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">triple</span><span class="token punctuation">(</span>a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">triple</span><span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">triple</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token number">3</span> <span class="token operator">*</span> <span class="token number">6</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token number">18</span><span class="token punctuation">;</span>
+</code></pre>
+<p>However, in pass by <em>name</em>, the <code>a + b</code> expression would be substituted into the function <em>first</em>, only getting evaluated <em>after the function is called</em>. It’s as if we’re passing in the expression <code>a + b</code>
+<em>itself</em> rather than the value <code>6</code>.</p>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token function">triple</span><span class="token punctuation">(</span>a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token number">3</span> <span class="token operator">*</span> <span class="token punctuation">(</span>a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token number">3</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token number">3</span> <span class="token operator">*</span> <span class="token number">6</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-js" data-language="js"><code is:raw="" class="language-js"><span class="token number">18</span><span class="token punctuation">;</span>
+</code></pre>
 <h2 id="call-by-need-semantics">Call-by-need Semantics</h2>
-<p>However, let’s say we change the game so that it now supports “dead” game pieces.
+<p>Let’s say we change the game so that it now supports “dead” game pieces.
 We find that the special case for “dead” game pieces comes up a lot, and that we
 don’t really care what color a piece is when it’s dead, so we want to give it its own callback.
 As such, we modify the <code>branchOnColor</code> function like so:</p>
@@ -188,7 +224,7 @@ we do, we don’t do any more work than we need to do.</p>
 of boilerplate and complexity to JavaScript code. I’m sure that if you’re a seasoned
 JS programmer, you’d’ve thought of far more elegant solutions to these problems than
 the ones I’ve just described.</p>
-<p>The neat thing about lazy evaluation is that other languages— like Haskell—
+<p>The neat thing about lazy evaluation is that other languages— particularly pure functional languages like Haskell—
 have it as a <em>default</em>. In other words, all the caching and wrapping in callbacks is
 done <em>automatically</em>.</p>
 <p>Here’s an example of the code snippet above implemented in Haskell. No <code>cache</code> or <code>() =></code> needed!</p>
