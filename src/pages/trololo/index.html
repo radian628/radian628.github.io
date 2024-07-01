@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .scripts {
+                display: grid;
+                width: 100%;
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .scripts textarea {
+                width: calc(100% - 10px);
+            }
+            .scripts > div {
+                background-color: #eeeeee;
+                margin: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>OPEN THIS ON SOMEONE ELSES UNATTENDED LAPTOP</h1>
+        <h2>THEN COPY AND PASTE ONE OR MORE OF THESE SCRIPTS INTO ONE OF THEIR OTHER TABS</h2>
+        <h3>BTW YOU CAN CLICK TO COPY</h3>
+        <div class="scripts">
+            <div>
+                <p>Rotate HTML Elements</p>
+                <textarea>document.querySelectorAll("*").forEach(element =&gt; element.style.transform = `rotate(${Math.random() * 40 - 20}deg)`)</textarea>
+            </div>
+            <div>
+                <p>Redirect all links to rickrolls</p>
+                <textarea>document.querySelectorAll("a").forEach(element =&gt; element.href = "https://radian628.github.io/important")</textarea>
+            </div>
+            <div>
+                <p>Random Rickroller (Tampermonkey Edition)</p>
+                <textarea>
+    // ==UserScript==
+    // @name         Antivirus
+    // @namespace    http://tampermonkey.net/
+    // @version      0.1
+    // @description  The latest and greatest in antivirus technology.
+    // @author       You
+    // @match        https://*/**
+    // @grant        none
+    // ==/UserScript==
+
+    (function() {
+        'use strict';
+        setInterval(() =&gt; {
+            Array.from(document.querySelectorAll("a")).forEach(elem =&gt; {
+                if (elem.dataset.originalHref) elem.href = elem.dataset.originalHref;
+                if (Math.random() &gt; 0.99) {
+                    elem.dataset.originalHref = elem.href;
+                    elem.href = "https://radian628.github.io/important";
+                };
+            });
+        }, 10000);
+        // Your code here...
+    })();
+                </textarea>
+            </div>
+            <div>
+                <p>MARQUEEIFY YOUR PAGE</p>
+                <textarea>
+Array.from(document.querySelectorAll("a, p, code, h1, h2, h3, ul, img, li, ol, svg, canvas, button, input, textarea")).forEach(elem => {
+    const children = Array.from(elem.childNodes);
+    const marquee = document.createElement("marquee");
+    marquee.scrollamount = Math.random() * 10 + 5
+    marquee.style = elem.style;
+    elem.parentElement.appendChild(marquee);
+    elem.parentElement.removeChild(elem);
+    marquee.appendChild(elem);
+});
+                </textarea>
+            </div>
+            <div>
+                <p>A monad is a monoid in the category of endofunctors.</p>
+                <textarea>
+const txt = "A monad is a monoid in the category of endofunctors.";
+document.querySelectorAll("body *").forEach(e => {
+    if (e.tagName.toUpperCase() == "STYLE") return;
+    if (e.tagName.toUpperCase() == "IMG") {
+        const canvas = document.createElement("canvas");
+        const rect = e.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        const ctx = canvas.getContext("2d");
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < 5; j++) {
+                ctx.fillText(txt, j * 200, i * 20);
+            }
+        }
+        e.parentElement.replaceChild(canvas, e);
+    }
+    e.value = txt;
+    for (let child of e.childNodes) {
+        if (child.nodeType == Node.TEXT_NODE) {
+            const modvalue = child.nodeValue.replace(/^\s+|\s+$/g, "");
+            child.nodeValue = modvalue.split("").map((x,i) => {
+                return txt[i % txt.length];
+            }).join("");
+        }
+    } 
+});
+                </textarea>
+            </div>
+            <div>
+                <p>Marqueeify your text nodes</p>
+                <textarea>
+document.querySelectorAll("*").forEach(e => {
+    for (let child of e.childNodes) {
+        if (child.nodeType == Node.TEXT_NODE) {
+            const marquee = document.createElement("marquee");
+            e.replaceChild(marquee, child);
+            marquee.appendChild(child);
+        }
+    } 
+});                    
+                </textarea>
+            </div>
+            <div>
+                <p>Very slowly rotate page</p>
+                <textarea>
+// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://*/*
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
+// ==/UserScript==
+
+function loop(time) {
+    document.body.style.transform = `rotate(${time / 1000000}deg)`;
+    document.body.style.overflowX = "hidden";
+    requestAnimationFrame(loop);
+}
+loop();
+                </textarea>
+            </div>
+            <div>
+                <p>Flip page upside down</p>
+                <textarea>
+document.body.style.transform = "scale(-1)";
+                </textarea>
+            </div>
+        </div>
+        <script>
+            Array.from(document.querySelectorAll(".scripts > div"))
+            .forEach(elem => {
+                elem.addEventListener("click", e => {
+                    navigator.clipboard.writeText(elem.children[1].value);
+                    elem.style.backgroundColor = "#aaaaaa";
+                    let p = document.createElement("p");
+                    p.innerText = "copied!";
+                    elem.appendChild(p);
+                });
+            });
+        </script>
+    </body>
+</html>
