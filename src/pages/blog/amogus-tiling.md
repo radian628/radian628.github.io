@@ -225,7 +225,8 @@ This wacky `replace` method is the same size.
 
 119 (bigint input) (by Alex_x90)
 ```js
-(u,v)=>{for(i=0n,s="";i<u*v;)s+=(i%u?"":` `)+" _|"[0x4560200060422626002005642542n>>(i%u+i++/u*48n)%56n*2n&3n];return s}
+(u,v)=>{for(i=0n,s="";i<u*v;)s+=(i%u?"":`
+`)+" _|"[0x4560200060422626002005642542n>>(i%u+i++/u*48n)%56n*2n&3n];return s}
 ```
 
 118 base 3 bigint

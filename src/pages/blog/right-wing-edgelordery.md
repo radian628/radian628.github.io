@@ -156,6 +156,14 @@ And even if you _do_ try to "educate yourself," who's to say your searches will 
 
 Honestly, even in an "ideal world" the "educate yourself" argument falls flat for exactly this reason: You can't put the onus on someone to faithfully research and consider a claim which they _think_ is utter hogwash because there are an infinite array of alternative, equally supposedly hogwash claims they could be considering. As far as they're concerned, why does _yours_ deserve special attention? You have to hook them in with a claim they consider reasonable. Telling someone to educate themselves is certainly the more _moral_ option because the situation often isn't a debate&mdash; it's a struggle to survive and to prove one's worth as a human being when such a thing should never be in the question. But it is _far_ from a _pragmatic_ option.
 
+### Let them come to their own conclusions
+
+If you're trying to "convert" someone so they escape the right-wing pipeline, then don't tell them how to think... or at least make it _subtle_. Someone stuck in the pipeline may fetishize logical thinking. And if they fetishize logical thinking and being able to deduce correct conclusions from data, then Being Wrong About Something is the ultimate shame. Therefore, if you imply that such a person is Wrong About Something, they will throw every kind of cognitive dissonance at you as they can to prove that they were Actually Right.
+
+What this means is that&mdash; pragmatically speaking&mdash; the best way to get them to admit they were wrong is to _allow them to come to that conclusion on their own_. Don't force your entire thesis upon them. Give them the underlying data that supports your thesis and ask them what they make of it. _Make them think it was their idea_ so they can preserve their pride. Give such a person an easy way out of admitting that their entire worldview is broken and they will happily take it.
+
+This might seem intellectually dishonest, and, well, that's because it kind of is. This to me is one of those classic "ends justify the means" scenarios because even though it'd be "better" to make them accept your worldview wholesale, that's never going to work in practice. But if they even accept just a _part_ of it from gentle nudges, they might start applying it to _other_ facets of their beliefs. The fetishization of logical thinking that makes them so stubborn may very well collapse if their worldview changes.
+
 ## Conclusion
 
 So that's my story about how I found myself stuck within the right-wing pipeline and how I later escaped it. I don't think I have anything else worth saying here, and I don't like long, drawn-out conclusions, so I think I'll just end it here. Thank you for reading!
