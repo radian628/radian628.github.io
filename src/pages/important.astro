@@ -7,7 +7,7 @@
 </head>
 <body>
   <script lang="ts">
-    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";   
+    window.location.href = atob(new URLSearchParams(window.location.search).get("redirect")) ?? "https://www.youtube.com/watch?v=dQw4w9WgXcQ";   
   </script> 
 </body>
 </html>
